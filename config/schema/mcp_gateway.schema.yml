@@ -1,0 +1,29 @@
+mcp_gateway.settings:
+  type: config_object
+  label: 'MCP Gateway settings'
+  mapping:
+    enabled_tools:
+      type: sequence
+      label: 'Enabled tools'
+      sequence:
+        type: string
+        label: 'Tool ID'
+    max_results:
+      type: integer
+      label: 'Maximum results a search tool may return'
+    audit:
+      type: mapping
+      label: 'Audit log'
+      mapping:
+        enabled:
+          type: boolean
+          label: 'Record tool calls'
+        retention_days:
+          type: integer
+          label: 'Days to keep audit records (0 = forever)'
+    allowed_origins:
+      type: sequence
+      label: 'Allowed browser origins'
+      sequence:
+        type: string
+        label: 'Origin'

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Drupal ${{ matrix.drupal }} / PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - drupal: '^11.2'
+            php: '8.3'
+          - drupal: '11.x-dev'
+            php: '8.4'
+    env:
+      SIMPLETEST_DB: sqlite://localhost//tmp/test.sqlite
+      SIMPLETEST_BASE_URL: http://127.0.0.1:8080
+      BROWSERTEST_OUTPUT_DIRECTORY: /tmp/browser_output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: mcp_gateway
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: gd, pdo_sqlite, sqlite3
+          coverage: none
+
+      - name: Create Drupal project
+        run: |
+          composer create-project drupal/recommended-project:${{ matrix.drupal }} drupal --no-interaction --no-install
+          cd drupal
+          composer config minimum-stability dev
+          composer config allow-plugins true
+          composer require --dev --no-interaction "drupal/core-dev:${{ matrix.drupal }}" -W
+          mkdir -p web/modules/custom
+          ln -s "$GITHUB_WORKSPACE/mcp_gateway" web/modules/custom/mcp_gateway
+
+      - name: Coding standards (Drupal, DrupalPractice)
+        working-directory: mcp_gateway
+        run: ../drupal/vendor/bin/phpcs --standard=phpcs.xml.dist
+
+      - name: Start web server
+        working-directory: drupal/web
+        run: |
+          mkdir -p /tmp/browser_output sites/simpletest
+          php -S 127.0.0.1:8080 .ht.router.php > /tmp/server.log 2>&1 &
+
+      - name: Unit, kernel and functional tests
+        working-directory: drupal
+        run: vendor/bin/phpunit -c web/core --testdox web/modules/custom/mcp_gateway/tests

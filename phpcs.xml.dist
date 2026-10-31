@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="mcp_gateway">
+  <description>Drupal coding standards for MCP Gateway.</description>
+  <file>.</file>
+  <arg name="extensions" value="php,module,install,yml"/>
+  <arg name="colors"/>
+  <arg value="sp"/>
+  <exclude-pattern>vendor/*</exclude-pattern>
+
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+
+  <!-- Readable tool schemas and test fixtures fit better on one line. -->
+  <rule ref="Drupal.Arrays.Array.LongLineDeclaration">
+    <severity>0</severity>
+  </rule>
+  <!-- Typed test properties are self-describing. -->
+  <rule ref="Drupal.Commenting.VariableComment.Missing">
+    <exclude-pattern>tests/*</exclude-pattern>
+  </rule>
+</ruleset>

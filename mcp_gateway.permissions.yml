@@ -1,0 +1,15 @@
+administer mcp gateway:
+  title: 'Administer MCP Gateway'
+  description: 'Choose which tools are exposed, manage audit settings and revoke any user''s tokens.'
+  restrict access: true
+
+use mcp gateway:
+  title: 'Connect AI assistants via MCP'
+  description: 'Create personal MCP access tokens and call the /mcp endpoint. Each tool also needs its own permission below.'
+
+view mcp audit log:
+  title: 'View the MCP audit log'
+  description: 'See every tool call AI assistants made, by which user, with what arguments and outcome.'
+
+permission_callbacks:
+  - \Drupal\mcp_gateway\McpPermissions::toolPermissions

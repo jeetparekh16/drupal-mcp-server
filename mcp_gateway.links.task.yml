@@ -1,0 +1,5 @@
+mcp_gateway.user_tokens:
+  title: 'MCP tokens'
+  route_name: mcp_gateway.user_tokens
+  base_route: entity.user.canonical
+  weight: 20

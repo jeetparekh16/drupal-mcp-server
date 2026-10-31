@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the MCP Gateway module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_schema().
+ */
+function mcp_gateway_schema(): array {
+  $schema['mcp_gateway_token'] = [
+    'description' => 'Personal access tokens for the MCP endpoint. Only a SHA-256 hash is stored.',
+    'fields' => [
+      'id' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'description' => 'Owner user ID.'],
+      'label' => ['type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''],
+      'token_hash' => ['type' => 'char', 'length' => 64, 'not null' => TRUE, 'description' => 'SHA-256 of the token.'],
+      'token_hint' => ['type' => 'varchar', 'length' => 16, 'not null' => TRUE, 'default' => '', 'description' => 'Last characters, to help users tell tokens apart.'],
+      'created' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'last_used' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'expires' => ['type' => 'int', 'not null' => TRUE, 'default' => 0, 'description' => '0 = never.'],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => ['token_hash' => ['token_hash']],
+    'indexes' => ['uid' => ['uid']],
+  ];
+
+  $schema['mcp_gateway_audit'] = [
+    'description' => 'Every MCP tool call, for review and compliance.',
+    'fields' => [
+      'id' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'tool' => ['type' => 'varchar', 'length' => 64, 'not null' => TRUE, 'default' => ''],
+      'arguments' => ['type' => 'text', 'size' => 'normal', 'not null' => FALSE],
+      'outcome' => ['type' => 'varchar', 'length' => 16, 'not null' => TRUE, 'default' => '', 'description' => 'success, denied, invalid or error.'],
+      'message' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => ''],
+      'duration_ms' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'ip' => ['type' => 'varchar', 'length' => 45, 'not null' => TRUE, 'default' => ''],
+      'created' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'created' => ['created'],
+      'uid' => ['uid'],
+      'tool' => ['tool'],
+    ],
+  ];
+
+  return $schema;
+}

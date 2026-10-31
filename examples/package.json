@@ -1,0 +1,12 @@
+{
+  "name": "mcp-gateway-example-client",
+  "private": true,
+  "type": "module",
+  "description": "Connects to a Drupal site running MCP Gateway with the official MCP TypeScript SDK.",
+  "scripts": {
+    "demo": "node sdk-client.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.0"
+  }
+}

@@ -1,0 +1,42 @@
+mcp_gateway.endpoint:
+  path: '/mcp'
+  defaults:
+    _controller: '\Drupal\mcp_gateway\Controller\McpController::handle'
+  methods: [POST]
+  requirements:
+    # Authentication and permission checks happen in the controller so the
+    # endpoint can answer with proper MCP/JSON-RPC errors (401 + WWW-Authenticate)
+    # instead of an HTML access-denied page.
+    _access: 'TRUE'
+  options:
+    _auth: ['mcp_token']
+    no_cache: TRUE
+
+mcp_gateway.settings:
+  path: '/admin/config/services/mcp-gateway'
+  defaults:
+    _form: '\Drupal\mcp_gateway\Form\SettingsForm'
+    _title: 'MCP Gateway'
+  requirements:
+    _permission: 'administer mcp gateway'
+
+mcp_gateway.audit_log:
+  path: '/admin/reports/mcp-audit'
+  defaults:
+    _controller: '\Drupal\mcp_gateway\Controller\AuditLogController::list'
+    _title: 'MCP audit log'
+  requirements:
+    _permission: 'view mcp audit log'
+
+mcp_gateway.user_tokens:
+  path: '/user/{user}/mcp-tokens'
+  defaults:
+    _form: '\Drupal\mcp_gateway\Form\TokenForm'
+    _title: 'MCP access tokens'
+  requirements:
+    _custom_access: '\Drupal\mcp_gateway\Form\TokenForm::access'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user

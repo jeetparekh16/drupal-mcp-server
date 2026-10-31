@@ -1,0 +1,39 @@
+services:
+  _defaults:
+    autowire: true
+
+  plugin.manager.mcp_tool:
+    class: Drupal\mcp_gateway\McpToolPluginManager
+    parent: default_plugin_manager
+
+  Drupal\mcp_gateway\TokenRepository:
+    arguments: ['@database', '@datetime.time']
+  mcp_gateway.token_repository:
+    alias: Drupal\mcp_gateway\TokenRepository
+
+  Drupal\mcp_gateway\AuditLogger:
+    arguments: ['@database', '@config.factory', '@datetime.time', '@request_stack']
+  mcp_gateway.audit_logger:
+    alias: Drupal\mcp_gateway\AuditLogger
+
+  Drupal\mcp_gateway\Server\ArgumentValidator: {}
+
+  Drupal\mcp_gateway\Server\McpServer:
+    arguments:
+      - '@plugin.manager.mcp_tool'
+      - '@Drupal\mcp_gateway\Server\ArgumentValidator'
+      - '@Drupal\mcp_gateway\AuditLogger'
+      - '@config.factory'
+      - '@logger.channel.mcp_gateway'
+  mcp_gateway.server:
+    alias: Drupal\mcp_gateway\Server\McpServer
+
+  logger.channel.mcp_gateway:
+    parent: logger.channel_base
+    arguments: ['mcp_gateway']
+
+  mcp_gateway.authentication.token:
+    class: Drupal\mcp_gateway\Authentication\Provider\McpTokenAuth
+    arguments: ['@Drupal\mcp_gateway\TokenRepository', '@entity_type.manager']
+    tags:
+      - { name: authentication_provider, provider_id: mcp_token, priority: 100 }

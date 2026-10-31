@@ -1,0 +1,11 @@
+mcp_gateway.settings:
+  title: 'MCP Gateway'
+  description: 'Expose site content to AI assistants through the Model Context Protocol.'
+  route_name: mcp_gateway.settings
+  parent: system.admin_config_services
+
+mcp_gateway.audit_log:
+  title: 'MCP audit log'
+  description: 'Tool calls made by AI assistants.'
+  route_name: mcp_gateway.audit_log
+  parent: system.admin_reports

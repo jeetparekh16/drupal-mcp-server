@@ -1,0 +1,9 @@
+name: 'MCP Gateway'
+type: module
+description: 'Model Context Protocol (MCP) server for Drupal. Lets AI assistants such as Claude search, read and draft content through permission-checked tools, with a full audit log.'
+package: Web services
+core_version_requirement: ^11.1
+configure: mcp_gateway.settings
+dependencies:
+  - drupal:node
+  - drupal:user

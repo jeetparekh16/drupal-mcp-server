@@ -1,0 +1,12 @@
+enabled_tools:
+  - site_info
+  - list_content_types
+  - search_content
+  - get_node
+  - create_draft
+  - update_node
+max_results: 25
+audit:
+  enabled: true
+  retention_days: 90
+allowed_origins: []
