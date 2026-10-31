@@ -60,7 +60,7 @@ final class SettingsForm extends ConfigFormBase {
       '#type' => 'item',
       '#title' => $this->t('MCP endpoint'),
       '#markup' => '<code>' . Url::fromRoute('mcp_gateway.endpoint', [], ['absolute' => TRUE])->toString() . '</code>',
-      '#description' => $this->t('Users create personal tokens on the "MCP tokens" tab of their profile, then add this URL to Claude or another MCP client.'),
+      '#description' => $this->t('Users create personal tokens on the "MCP tokens" tab of their profile, then add this URL to their LLM assistant or other MCP client.'),
     ];
 
     $options = [];

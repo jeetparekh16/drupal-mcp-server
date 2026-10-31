@@ -100,7 +100,7 @@ final class McpEndpointTest extends BrowserTestBase {
     $this->assertSame('Grant reporting FAQ', $search['result']['structuredContent']['results'][0]['title']);
 
     $draft = self::decode($this->post(['jsonrpc' => '2.0', 'id' => 'abc', 'method' => 'tools/call', 'params' => [
-      'name' => 'create_draft', 'arguments' => ['type' => 'article', 'title' => 'Written by Claude'],
+      'name' => 'create_draft', 'arguments' => ['type' => 'article', 'title' => 'Written by an LLM'],
     ]], $token));
     $this->assertSame('abc', $draft['id']);
     $this->assertFalse($draft['result']['isError']);
@@ -123,9 +123,9 @@ final class McpEndpointTest extends BrowserTestBase {
     $this->drupalGet('user/' . $user->id() . '/mcp-tokens');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('No tokens yet.');
-    $this->submitForm(['label' => 'Claude Desktop', 'lifetime' => '30'], 'Generate token');
+    $this->submitForm(['label' => 'Laptop assistant', 'lifetime' => '30'], 'Generate token');
     $this->assertSession()->pageTextContains('Copy your new token now');
-    $this->assertSession()->pageTextContains('claude mcp add --transport http drupal');
+    $this->assertSession()->pageTextContains('Add this to your MCP client');
 
     $token = $this->getSession()->getPage()->find('css', 'code.mcp-token')->getText();
     $this->assertMatchesRegularExpression('/^mcp_[0-9a-f]{48}$/', $token);
@@ -138,7 +138,7 @@ final class McpEndpointTest extends BrowserTestBase {
 
     // Revoking kills the token.
     $this->drupalGet('user/' . $user->id() . '/mcp-tokens');
-    $this->assertSession()->pageTextContains('Claude Desktop');
+    $this->assertSession()->pageTextContains('Laptop assistant');
     $checkbox = $this->getSession()->getPage()->find('css', 'input[name^="existing["]');
     $checkbox->check();
     $this->submitForm([], 'Revoke selected');

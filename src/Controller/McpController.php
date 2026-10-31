@@ -65,7 +65,7 @@ final class McpController implements ContainerInjectionInterface {
    * Checks the Origin header to guard against DNS rebinding.
    *
    * Browser requests must come from this site or an origin the admin allowed.
-   * Non-browser clients (Claude Desktop, Claude Code, scripts) send no Origin.
+   * Non-browser clients (desktop apps, CLIs, scripts) send no Origin header.
    */
   private function originAllowed(Request $request): bool {
     $origin = $request->headers->get('Origin');

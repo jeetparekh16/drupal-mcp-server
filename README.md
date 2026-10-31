@@ -1,12 +1,12 @@
 # MCP Gateway for Drupal
 
-**Let AI assistants like Claude work with your Drupal site, safely.**
+**Let LLM-powered AI assistants work with your Drupal site, safely.**
 
-MCP Gateway turns a Drupal 11 site into a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. Claude, Claude Code, or any MCP client can search, read and draft content through a set of tools, and every tool call runs as a real Drupal user, so roles, node access and field access all apply exactly as they do in the browser.
+MCP Gateway turns a Drupal 11 site into a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. Any MCP-compatible AI assistant or LLM agent can search, read and draft content through a set of tools, and every tool call runs as a real Drupal user, so roles, node access and field access all apply exactly as they do in the browser.
 
 ```
 You:     "Find our naloxone guidance and draft a one-paragraph summary for the newsletter."
-Claude:  → search_content {"query": "naloxone"}
+LLM:     → search_content {"query": "naloxone"}
          → get_node {"nid": 6}
          → create_draft {"type": "article", "title": "Newsletter: naloxone outreach", ...}
          "Done. The draft is unpublished and ready for an editor: /node/8/edit"
@@ -30,7 +30,7 @@ Organizations want AI help with their content, but they cannot give a model an a
 
 ```mermaid
 flowchart LR
-    C["Claude / any MCP client"] -- "POST /mcp<br/>JSON-RPC 2.0<br/>Bearer mcp_…" --> A
+    C["LLM assistant / any MCP client"] -- "POST /mcp<br/>JSON-RPC 2.0<br/>Bearer mcp_…" --> A
     subgraph Drupal 11
         A["McpTokenAuth<br/>(authentication provider)"] --> R["McpController<br/>Streamable HTTP"]
         R --> S["McpServer<br/>initialize · tools/list · tools/call"]
@@ -75,14 +75,12 @@ drush en mcp_gateway
 
 ## Connect an AI assistant
 
-**Claude Code**
+**Clients that support remote MCP servers** (Streamable HTTP): add a server with
 
-```bash
-claude mcp add --transport http drupal https://your-site.example/mcp \
-  --header "Authorization: Bearer mcp_your_token"
-```
+- URL: `https://your-site.example/mcp`
+- Header: `Authorization: Bearer mcp_your_token`
 
-**Claude Desktop** (`claude_desktop_config.json`, using the `mcp-remote` bridge)
+**Clients that only run local servers** (the common `mcpServers` JSON config, using the `mcp-remote` bridge)
 
 ```json
 {

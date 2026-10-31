@@ -70,21 +70,21 @@ final class TokenForm extends FormBase {
         '#attributes' => ['class' => ['messages', 'messages--warning']],
         'title' => ['#markup' => '<h3>' . $this->t('Copy your new token now. It will not be shown again.') . '</h3>'],
         'token' => ['#markup' => '<p><code class="mcp-token">' . $new . '</code></p>'],
-        'claude_code_label' => [
+        'client_label' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t('Connect Claude Code:'),
+          '#value' => $this->t('Add this to your MCP client:'),
         ],
-        'claude_code' => [
+        'client_config' => [
           '#type' => 'html_tag',
           '#tag' => 'pre',
-          '#plain_text' => sprintf('claude mcp add --transport http drupal %s --header "Authorization: Bearer %s"', $endpoint, $new),
+          '#plain_text' => sprintf("URL:    %s\nHeader: Authorization: Bearer %s", $endpoint, $new),
         ],
       ];
     }
 
     $form['intro'] = [
-      '#markup' => '<p>' . $this->t('Tokens let AI assistants such as Claude act as <strong>@name</strong> on this site through the MCP endpoint <code>@endpoint</code>. They get exactly the permissions this account has. Treat tokens like passwords.', [
+      '#markup' => '<p>' . $this->t('Tokens let LLM-powered AI assistants act as <strong>@name</strong> on this site through the MCP endpoint <code>@endpoint</code>. They get exactly the permissions this account has. Treat tokens like passwords.', [
         '@name' => $user->getDisplayName(),
         '@endpoint' => $endpoint,
       ]) . '</p>',
@@ -130,7 +130,7 @@ final class TokenForm extends FormBase {
     $form['new']['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
-      '#description' => $this->t('Where you will use it, e.g. "Claude Desktop on my laptop".'),
+      '#description' => $this->t('Where you will use it, e.g. "AI assistant on my laptop".'),
       '#maxlength' => 128,
       '#required' => TRUE,
     ];

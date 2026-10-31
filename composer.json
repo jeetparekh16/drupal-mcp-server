@@ -1,9 +1,9 @@
 {
     "name": "jeetparekh/mcp_gateway",
-    "description": "Model Context Protocol (MCP) server for Drupal 11: permission-checked tools for AI assistants such as Claude, with token auth and an audit log.",
+    "description": "Model Context Protocol (MCP) server for Drupal 11: permission-checked tools for LLM-powered AI assistants, with token auth and an audit log.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "keywords": ["drupal", "mcp", "model-context-protocol", "ai", "claude", "llm"],
+    "keywords": ["drupal", "mcp", "model-context-protocol", "ai", "llm", "agents"],
     "authors": [
         {
             "name": "Jeet Parekh",
